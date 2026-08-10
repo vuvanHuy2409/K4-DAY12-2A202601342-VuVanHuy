@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Giao diện trợ lý AI L-GPT" />
+    <title>L-GPT — Trợ lý AI</title>
+    <link rel="stylesheet" href="/static/style.css" />
+  </head>
+  <body>
+    <div class="ambient ambient-one" aria-hidden="true"></div>
+    <div class="ambient ambient-two" aria-hidden="true"></div>
+
+    <main class="app-shell">
+      <aside class="sidebar">
+        <a class="brand" href="/" aria-label="L-GPT">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 32 32" role="img">
+              <path d="M8 19.5c-3.8-2.4-5.7-4.8-4.8-6.4 1.4-2.4 8.5-.9 15.9 3.3s12.3 9.6 10.9 12c-.9 1.6-4 .9-7.9-1.1" />
+              <circle cx="15" cy="14" r="7" />
+              <circle class="spark" cx="23.5" cy="7.5" r="2.1" />
+            </svg>
+          </span>
+          <span>
+            <strong>L-GPT</strong>
+            <small>Trợ lý AI</small>
+          </span>
+        </a>
+
+        <section class="connection-card" aria-labelledby="connection-title">
+          <div class="section-heading">
+            <span id="connection-title">Kết nối API</span>
+            <span class="status-pill" id="status-pill">
+              <i></i><span>Đang kiểm tra</span>
+            </span>
+          </div>
+
+          <label for="client-id">Client ID</label>
+          <input id="client-id" name="client-id" value="sv01" autocomplete="off" />
+
+          <label for="api-token">Bearer token</label>
+          <div class="token-field">
+            <input id="api-token" name="api-token" type="password" placeholder="Nhập API_TOKEN" autocomplete="off" />
+            <button id="toggle-token" type="button" aria-label="Hiện hoặc ẩn token">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z" />
+                <circle cx="12" cy="12" r="2.5" />
+              </svg>
+            </button>
+          </div>
+          <p class="field-note">Token chỉ được giữ trong tab hiện tại.</p>
+        </section>
+
+        <div class="sidebar-footer">
+          <div><span>Service</span><strong>l-gpt</strong></div>
+          <div><span>Version</span><strong>1.0.0</strong></div>
+          <a href="/docs" target="_blank" rel="noreferrer">Mở API docs <span>↗</span></a>
+        </div>
+      </aside>
+
+      <section class="workspace">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">Trợ lý AI sẵn sàng phục vụ</p>
+            <h1>Hỏi điều bạn đang xây dựng.</h1>
+          </div>
+          <button class="clear-button" id="clear-chat" type="button" title="Xóa hội thoại trên giao diện">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M4 7h16M9 7V4h6v3m-9 0 1 13h10l1-13M10 11v5m4-5v5" />
+            </svg>
+            <span>Xóa đoạn chat</span>
+          </button>
+        </header>
+
+        <div class="chat-panel" id="chat-panel" aria-live="polite">
+          <div class="welcome" id="welcome">
+            <div class="welcome-icon" aria-hidden="true">✦</div>
+            <h2>Chào Huy, bắt đầu nhé.</h2>
+            <p>Gửi câu hỏi để thử chat service, xác thực Bearer token và lịch sử hội thoại.</p>
+            <div class="suggestions">
+              <button type="button" data-prompt="Docker multi-stage build là gì?">Docker multi-stage</button>
+              <button type="button" data-prompt="Giải thích 12-Factor Config thật ngắn gọn">12-Factor Config</button>
+              <button type="button" data-prompt="Health check trong production hoạt động ra sao?">Health check</button>
+            </div>
+          </div>
+          <div class="messages" id="messages"></div>
+        </div>
+
+        <form class="composer" id="chat-form">
+          <div class="composer-box">
+            <textarea id="message" name="message" rows="1" maxlength="2000" placeholder="Nhập câu hỏi của bạn..." aria-label="Nội dung tin nhắn"></textarea>
+            <button class="send-button" id="send-button" type="submit" aria-label="Gửi tin nhắn">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="m5 12 14-7-4 14-3-6-7-1Z" /><path d="m12 13 7-8" />
+              </svg>
+            </button>
+          </div>
+          <div class="composer-meta">
+            <span>Enter để gửi · Shift + Enter để xuống dòng</span>
+            <span id="char-count">0 / 2000</span>
+          </div>
+        </form>
+      </section>
+    </main>
+
+    <template id="message-template">
+      <article class="message">
+        <div class="avatar"></div>
+        <div class="message-body">
+          <div class="message-label"></div>
+          <p class="message-text"></p>
+          <div class="message-meta"></div>
+        </div>
+      </article>
+    </template>
+
+    <script src="/static/app.js" defer></script>
+  </body>
+</html>

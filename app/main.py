@@ -15,9 +15,11 @@ from __future__ import annotations
 
 from contextlib import asynccontextmanager
 from functools import lru_cache
+from pathlib import Path
 
 from fastapi import Depends, FastAPI
-from fastapi.responses import JSONResponse
+from fastapi.responses import FileResponse, JSONResponse
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
 from utils.mock_llm import generate_reply
@@ -30,8 +32,9 @@ from .logging_utils import emit
 from .rate_limiter import TokenBucket
 from .store import ChatStore, get_redis_client
 
-SERVICE_NAME = "day12-chat-service"
+SERVICE_NAME = "l-gpt"
 SERVICE_VERSION = "1.0.0"
+STATIC_DIR = Path(__file__).with_name("static")
 
 
 # ─────────────────────────────────────────────────────────────
@@ -69,7 +72,14 @@ async def lifespan(_app: FastAPI):
     emit("service_stopped", service=SERVICE_NAME)
 
 
-app = FastAPI(title="Day 12 Chat Service", version=SERVICE_VERSION, lifespan=lifespan)
+app = FastAPI(title="L-GPT", version=SERVICE_VERSION, lifespan=lifespan)
+app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
+
+
+@app.get("/", include_in_schema=False)
+def home():
+    """Giao diện web của chat service."""
+    return FileResponse(STATIC_DIR / "index.html")
 
 
 class ChatRequest(BaseModel):
@@ -159,7 +169,33 @@ def chat(
     ``client_id`` do ``verify_bearer_token`` trả về, nên request không có
     token hợp lệ sẽ dừng ở 401 trước khi chạm vào bất cứ dòng nào ở đây.
     """
-    raise NotImplementedError("TODO (CP3/CP4): cài đặt /chat")
+    bucket.consume(client_id)
+    guard.check(client_id)
+    history = store.history(client_id)
+    result = generate_reply(payload.message, history)
+
+    store.add_turn(client_id, "user", payload.message)
+    store.add_turn(client_id, "assistant", result["text"])
+    guard.record(client_id, result["usd_cost"])
+
+    emit(
+        "chat_completed",
+        client_id=client_id,
+        prompt_tokens=result["prompt_tokens"],
+        completion_tokens=result["completion_tokens"],
+        usd_cost=result["usd_cost"],
+    )
+
+    return {
+        "reply": result["text"],
+        "client_id": client_id,
+        "turns_before": len(history),
+        "usd_cost": result["usd_cost"],
+        "usage": {
+            "prompt": result["prompt_tokens"],
+            "completion": result["completion_tokens"],
+        },
+    }
 
 
 if __name__ == "__main__":
