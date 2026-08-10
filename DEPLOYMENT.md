@@ -19,7 +19,7 @@
 | Mục | Nội dung |
 |-----|----------|
 | Public URL | https://TODO-thay-bang-url-that.up.railway.app |
-| Platform | Render |
+| Platform | Railway |
 | Ngày deploy | 2026-08-10 |
 
 ## Biến Môi Trường Đã Set Trên Cloud
@@ -30,7 +30,7 @@ Ghi tên biến và **nguồn giá trị**, không ghi giá trị:
 |------|--------|---------|
 | `PORT` | ✅ | platform tự gán |
 | `API_TOKEN` | ✅ | đặt trong dashboard, không nằm trong repo |
-| `REDIS_URL` | ✅ | Render Key Value — lấy qua `connectionString` trong Blueprint |
+| `REDIS_URL` | ✅ | Railway Redis — reference `${{Redis.REDIS_URL}}` |
 | `BUCKET_CAPACITY` | ✅ | 10 |
 | `REFILL_PER_MINUTE` | ✅ | 10 |
 | `DAILY_BUDGET_USD` | ✅ | 1.0 |
@@ -74,7 +74,7 @@ done; echo
 Dán output của các lệnh trên vào đây:
 
 ```
-Chờ Public URL từ Render để chạy và ghi kết quả kiểm tra thật.
+Chờ Public URL từ Railway để chạy và ghi kết quả kiểm tra thật.
 ```
 
 ## Ảnh Chụp Màn Hình
@@ -98,5 +98,5 @@ Không đăng ký được tài khoản cloud? Vẫn nộp được bài, nhưng
 5. Ghi rõ lý do không deploy được vào phần dưới đây:
 
 ```
-Không dùng phương án dự phòng; đang triển khai Web Service trên Render.
+Không dùng phương án dự phòng; đang triển khai service trên Railway.
 ```
