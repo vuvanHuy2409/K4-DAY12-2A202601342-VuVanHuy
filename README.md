@@ -45,9 +45,7 @@ K4-DAY12-<Mã học viên>-<Họ và Tên>
 **Ví dụ:**
 
 | Học viên | Tên repo |
-|----------|----------|
-| 2A202600280 — Nguyễn Văn An | `K4-DAY12-2A202600280-NguyenVanAn` |
-| 2A202601111 — Trần Thị Bích Hà | `K4-DAY12-2A202601111-TranThiBichHa` |
+|2A20260134 - Vũ Văn Huy|K4-DAY12-2A202601342-VuVanHuy|
 
 **Sai tên repo = trừ 5 điểm.** Đây là cách duy nhất để Lab Coach biết bài của ai
 trong khoảng 1000 repo.
