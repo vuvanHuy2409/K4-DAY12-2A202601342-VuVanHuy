@@ -18,7 +18,7 @@
 
 | Mục | Nội dung |
 |-----|----------|
-| Public URL | https://TODO-thay-bang-url-that.up.railway.app |
+| Public URL | https://l-gpt-vuvanhuy-production-31e5.up.railway.app |
 | Platform | Railway |
 | Ngày deploy | 2026-08-10 |
 
@@ -74,7 +74,15 @@ done; echo
 Dán output của các lệnh trên vào đây:
 
 ```
-Chờ Public URL từ Railway để chạy và ghi kết quả kiểm tra thật.
+Public URL: https://l-gpt-vuvanhuy-production-31e5.up.railway.app
+
+GET  /healthz                 -> 200 {"status":"ok","service":"l-gpt","version":"1.0.0"}
+GET  /readyz                  -> 200 {"status":"ready","redis":true}
+POST /chat (không token)      -> 401, WWW-Authenticate: Bearer
+POST /chat (token thật)       -> 200
+
+pytest tests/test_cp5.py -v:
+9 passed, 4 skipped in 1.62s
 ```
 
 ## Ảnh Chụp Màn Hình
